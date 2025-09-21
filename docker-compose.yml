@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+  frontend:
+    container_name: frontend-ts
+    image: node:lts
+    working_dir: /var/www/html/app/frontend-ts
+    ports:
+      - 8000:8000
+    volumes:
+      - ./frontend-ts/:/var/www/html/app/frontend-ts
+    tty: true
+    command:
+      npm run dev
+  
+  backend:
+    container_name: backend-ts
+    image: node:lts
+    working_dir: /var/www/html/app/backend-ts
+    ports:
+      - 8001:8001
+    volumes:
+      - ./backend-ts/:/var/www/html/app/backend-ts
+    tty: true
+    command:
+      npm run dev
