@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Product from '@/components/TheShop/OneProduct.vue'
-import { useProducts } from '@/composables/useProducts.ts'
+import Product from '@/components/TheShop/OneProduct.vue';
+import { useProducts } from '@/composables/useProducts.ts';
+import { useSocket } from '@/composables/useSocket';
 
 interface Category {
     name: string
@@ -16,9 +17,10 @@ interface Product {
 }
 
 const { products, productsLoading } = useProducts()
+const { emit, isConnected } = useSocket<Product>('ws://localhost:8001');
 
-function addProduct(productId: number): void {
-    console.log('Товар добавлен')
+function addProduct(product: Product): void {
+  emit('add-product', product);
 }
 </script>
 
@@ -34,7 +36,8 @@ function addProduct(productId: number): void {
     >
         <button
             class="square-button"
-            @click="addProduct(product.id)"
+            :disabled="!isConnected"
+            @click="addProduct(product)"
         >
             Добавить
         </button>
